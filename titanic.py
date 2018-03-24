@@ -9,6 +9,10 @@ from sklearn.metrics import recall_score
 from sklearn import tree
 from sklearn import linear_model
 from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import MinMaxScaler
+
+# ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked']
+# ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
 
 train_data_object = csv.reader(open('train.csv'))
 test_data = csv.reader(open('test.csv'))
@@ -24,7 +28,6 @@ count = 0
 for x in train_data_object:
     if count == 0:
         x = [i for j, i in enumerate(x) if j not in del_indexes] 
-        print(x)
     else:
         x = ['0' if v == '' else v for v in x]
         labels.append(int(x[1]))
@@ -35,7 +38,6 @@ for x in train_data_object:
             x[4] = 2
         else:
             x[4] = 0
-
         if x[11] == 'C':
             x[11] = 1
         elif x[11] == 'Q':
@@ -54,10 +56,28 @@ for x in train_data_object:
 
     count += 1
 
-train_data = np.array(train_data)
+y = []
+test = []
+# for x in train_data:
+#     y.append(x[1])
+#     y.append(x[2])
+#     test.append(y)
+#     y = []
+
+# scaler = MinMaxScaler()
+# scaler.fit(test)
+
+# test = scaler.transform(test)
+# count = 0 
+# for x in test:
+#     train_data[count][1] = x[0] + x[1]
+#     del train_data[count][2]
+#     count += 1
+    
 # print(train_data)
 
-labels = np.array(labels)
+train_data = np.array(train_data)
+
 
 features_train, features_test, labels_train, labels_test = cross_validation.train_test_split(train_data, labels, test_size=0.3, random_state=42)
         
@@ -65,18 +85,20 @@ features_train, features_test, labels_train, labels_test = cross_validation.trai
     
 # clf = svm.SVC()
 # clf = tree.DecisionTreeClassifier()
-clf = GaussianNB()
-clf = clf.fit(features_train, labels_train)
+# clf = GaussianNB()
+# clf = clf.fit(features_train, labels_train)
 
+for x in features_train:
+    print(x)
 # print(features_train)
 # print(labels_train)
-pred = clf.predict(features_test)
+# pred = clf.predict(features_test)
 
-print(pred)
-print(labels_test)
-print(accuracy_score(labels_test, pred))
-print(precision_score(labels_test, pred))
-print(recall_score(labels_test, pred))  
+# # print(pred)
+# # print(labels_test)
+# print(accuracy_score(labels_test, pred))
+# print(precision_score(labels_test, pred))
+# print(recall_score(labels_test, pred))  
 
 
 
@@ -89,3 +111,7 @@ print(recall_score(labels_test, pred))
 # 0.798507462687
 # 0.747826086957
 # 0.774774774775
+
+
+
+
